@@ -5,6 +5,8 @@ dotenv.config();
 import mongoose, { MongooseError } from "mongoose";
 const server = http.createServer(app);
 const URI = process.env.URI;
+// use utlencoded while working with forms and not json
+
 console.log(URI);
 const PORT = process.env.PORT || 8000;
 const startServer = async () => {
