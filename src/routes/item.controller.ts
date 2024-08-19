@@ -175,3 +175,35 @@ export const updateItem = async (
     next(error);
   }
 };
+
+export const searchItemByName = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { name } = req.query; // Get the search query from the request query parameters
+    console.log(name);
+    console.log(req.query);
+
+    if (!name) {
+      return res.status(400).json({ message: "Please provide a search term." });
+    }
+
+    // Create a case-insensitive regular expression for flexible searching
+    const regex = new RegExp(name as string, "i");
+
+    // Search for items matching the name
+    const items = await Item.find({ name: { $regex: regex } });
+
+    if (items.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No items found matching that name." });
+    }
+
+    res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+};
